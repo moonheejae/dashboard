@@ -1,0 +1,96 @@
+server:
+  port: 8021
+  shutdown: graceful
+  name: htPlatform
+  http2:
+    enabled: true
+
+springdoc:
+  api-docs.enabled: true
+  packages-to-scan: com.cknb.htPlatform
+  swagger-ui.path: /api/app/swagger-ui
+  api-docs.path: /api/app/api-docs
+  api-docs.groups.enabled: true
+  cache.disabled: true
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+
+spring:
+  http:
+    multipart:
+      enabled: false
+  datasource:
+    url: jdbc:log4jdbc:mysql://hiddentag.cz5fx5xtsihl.ap-southeast-1.rds.amazonaws.com:9306/hiddentag?useSSL=false&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: cknb_data_report
+    password: cknb_data_report
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jpa:
+      hibernate:
+        ddl-auto: none
+      properties:
+        hibernate:
+          format_sql: true
+  # thymeleaf
+    thymeleaf:
+      cache: false
+  application:
+    name: htTotalApp
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+  logging:
+    level:
+      org.hibernate.SQL: info
+      org.hibernate.type: trace
+#  # 스케줄러
+#  task:
+#    scheduling:
+#      pool:
+#        size: 5
+#      thread-name-prefix: "scheduler-"
+#    execution:
+#      shutdown:
+#        await-termination: true
+#        await-termination-period: 60s
+  ## thymeleaf
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+    file: "[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+  level:
+    com.example.log: debug
+    org:
+      springframework:
+        scheduling: debug
+  logback:
+    rollingpolicy:
+      max-history: 7
+  file:
+    name: /var/log/server.log
+
+  # AES Key
+aes:
+  key: 2021.06.03.cknb.hiddentagiqr.com
+
+application:
+  urls:
+    # CKNB Admin 사이트 입니다.
+    admin: http://hiddentagiqr.com
+    wAdmin: http://www.hiddentagiqr.com
+    data_report: http://hiddentagiqr.com:8020/
+  security:
+    # 데이터 보고서 URL 체크 여부(true : urls-admin 통해서만 접근 가능 / false : 체크 안함)
+    referer-check-enabled: false

@@ -1,0 +1,362 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    &lt;!&ndash; 2. CSS 파일들을 먼저 로드 &ndash;&gt;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/css/ui.jqgrid.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    &lt;!&ndash; 3. 핵심 라이브러리 순서대로 로드 &ndash;&gt;
+    <script th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/js/jquery.jqgrid.min.js"></script>
+    &lt;!&ndash; 4. Chart.js 관련 &ndash;&gt;
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    &lt;!&ndash; Flatpickr 스타일 &ndash;&gt;
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    &lt;!&ndash; Flatpickr JS &ndash;&gt;
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    &lt;!&ndash; monthSelectPlugin 추가 &ndash;&gt;
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+
+    &lt;!&ndash; 5. 기타 공통 스크립트 &ndash;&gt;
+    <script th:src="@{/js/common/default.js}"></script>
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/lib/swiper.js}"></script>
+    <script th:src="@{/js/publishing.js}"></script>
+    <script th:src="@{/js/home/total.js}"></script>
+    <title>HiddenTag 히든 태그 플랫폼 데이터 관제</title>
+</head>-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <!-- 1. 초기 셋팅 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- 2. CSS 파일들을 먼저 로드 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/css/ui.jqgrid.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- 3. 핵심 라이브러리 순서대로 로드 -->
+    <script th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/free-jqgrid@4.15.5/js/jquery.jqgrid.min.js"></script>
+    <!-- 4. Chart.js 관련 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <!-- 5. 기타 공통 스크립트 -->
+    <script th:src="@{/js/common/default.js}"></script>
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/lib/swiper.js}"></script>
+    <script th:src="@{/js/publishing.js}"></script>
+    <script th:src="@{/js/home/total.js}"></script>
+    <title>HiddenTag 플랫폼 데이터 관제</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Orbitron', monospace;
+            overflow-x: hidden;
+        }
+
+        .main-header {
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            border: 2px solid #00ffff;
+            border-radius: 0;
+            padding: 20px 40px;
+            margin: 20px;
+            box-shadow:
+                    0 0 20px rgba(0, 255, 255, 0.3),
+                    inset 0 0 20px rgba(0, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0, 255, 255, 0.2),
+                    transparent
+            );
+            animation: scan 3s infinite;
+        }
+
+        .main-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                    repeating-linear-gradient(
+                            0deg,
+                            transparent,
+                            transparent 2px,
+                            rgba(0, 255, 255, 0.05) 2px,
+                            rgba(0, 255, 255, 0.05) 4px
+                    );
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .corner-decoration {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #00ffff;
+            border-right: none;
+            border-bottom: none;
+            margin-right: 20px;
+            position: relative;
+        }
+
+        .corner-decoration::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 10px;
+            height: 10px;
+            background: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        h1 {
+            color: #00ffff;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow:
+                    0 0 10px rgba(0, 255, 255, 0.8),
+                    0 0 20px rgba(0, 255, 255, 0.4),
+                    0 0 30px rgba(0, 255, 255, 0.2);
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .tech-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .tech-line {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: pulse 1.5s infinite;
+        }
+
+        .tech-line:nth-child(2) {
+            width: 60px;
+            animation-delay: 0.3s;
+        }
+
+        .tech-line:nth-child(3) {
+            width: 35px;
+            animation-delay: 0.6s;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ffff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff00;
+            box-shadow:
+                    0 0 10px #00ff00,
+                    0 0 20px rgba(0, 255, 0, 0.3);
+            animation: statusBlink 2s infinite;
+        }
+
+        /* ONLINE 상태 */
+        .status-indicator.online .status-dot {
+            background: #00ff00;
+            box-shadow:
+                    0 0 10px #00ff00,
+                    0 0 20px rgba(0, 255, 0, 0.3);
+            animation: statusBlinkOnline 2s infinite;
+        }
+
+        .status-indicator.online {
+            color: #00ff00;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+        }
+
+        /* OFFLINE 상태 */
+        .status-indicator.offline .status-dot {
+            background: #ff0000;
+            box-shadow:
+                    0 0 10px #ff0000,
+                    0 0 20px rgba(255, 0, 0, 0.3);
+            animation: statusBlinkOffline 1s infinite;
+        }
+
+        .status-indicator.offline {
+            color: #ff0000;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+        }
+
+        .corner-decoration-right {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #00ffff;
+            border-left: none;
+            border-bottom: none;
+            margin-left: 20px;
+            position: relative;
+        }
+
+        .corner-decoration-right::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow:
+                        0 0 10px rgba(0, 255, 255, 0.8),
+                        0 0 20px rgba(0, 255, 255, 0.4),
+                        0 0 30px rgba(0, 255, 255, 0.2);
+            }
+            100% {
+                text-shadow:
+                        0 0 15px rgba(0, 255, 255, 1),
+                        0 0 25px rgba(0, 255, 255, 0.6),
+                        0 0 35px rgba(0, 255, 255, 0.4);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes statusBlinkOnline {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes statusBlinkOffline {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.1; }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .main-header {
+                margin: 10px;
+                padding: 15px 20px;
+            }
+
+            h1 {
+                font-size: 18px;
+                letter-spacing: 1px;
+            }
+
+            .corner-decoration,
+            .corner-decoration-right {
+                width: 20px;
+                height: 20px;
+                margin: 0 10px;
+            }
+
+            .tech-lines {
+                display: none;
+            }
+        }
+
+        .datetime-display{
+            color: white;
+            font-family: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="main-header">
+    <div class="header-content">
+        <div class="header-left">
+            <div class="corner-decoration"></div>
+            <h1>HiddenTag 히든 태그 플랫폼 데이터 관제</h1>
+        </div>
+        <div class="header-right">
+            <!-- 날짜 설정 -->
+            <div class="datetime-display">
+                <div class="date-display" id="dateDisplay"></div>
+                <div class="time-display" id="timeDisplay"></div>
+            </div>
+            <div class="tech-lines">
+                <div class="tech-line"></div>
+                <div class="tech-line"></div>
+                <div class="tech-line"></div>
+            </div>
+            <div class="status-indicator" id="statusIndicator">
+                <div class="status-dot"></div>
+                <span id="statusText">ONLINE</span>
+            </div>
+            <div class="corner-decoration-right"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

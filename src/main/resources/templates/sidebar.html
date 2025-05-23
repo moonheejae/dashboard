@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script th:src="@{/js/lib/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/sidebar.js}"></script>
+    <script th:src="@{/js/common/default.js}"></script>
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/lib/swiper.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
+    <title>SideBar</title>
+</head>
+<body>
+<div class="sidebar" th:fragment="sidebar">
+    <div class="tit-wrap">
+        <h1>데이터 보고서</h1>
+        <i class="ic-cancle"></i>
+    </div>
+    <ul>
+        <h3>1.종합</h3>
+        <li><a th:href="@{/templates/home/total}">종합 데이터</a></li>
+    </ul>
+    <ul>
+        <h3>2.다운로드</h3>
+        <li><a th:href="@{/download/playStore}">PlayStore</a></li>
+        <li><a th:href="@{/download/appStore}">AppStore</a></li>
+        <li><a th:href="@{/download/chinaMarket}">중국마켓</a></li>
+        <li><a th:href="@{/download/compareData}">데이터 비교</a></li>
+    </ul>
+    <ul>
+        <h3>3.실행/스캔</h3>
+        <li><a th:href="@{/exe/device}">디바이스별 실행/스캔/비교</a></li>
+        <li><a th:href="@{/exe/lang}">언어별 실행/스캔</a></li>
+        <li><a th:href="@{/exe/os}">os별 실행/스캔</a></li>
+        <li><a th:href="@{/exe/nation}">국가별 실행/스캔</a></li>
+        <li><a th:href="@{/exe/market}">마켓별 실행/스캔</a></li>
+        <li><a th:href="@{/exe/chinaMarket}">중국마켓별 실행/스캔</a></li>
+        <li><a th:href="@{/exe/app}">앱별 실행/스캔/비교</a></li>
+    </ul>
+    <ul>
+        <h3>4.고객사</h3>
+        <li><a th:href="@{/scan/byCustomer}">고객사별 스캔/발주</a></li>
+        <li><a th:href="@{/scan/category}">카테고리별 발주/스캔</a></li>
+        <li><a th:href="@{/scan/byNation}">국가별 TOP10</a></li>
+        <li><a th:href="@{/scan/byCompany}">업체별 TOP10</a></li>
+        <li><a th:href="@{/scan/byRate}">스캔 변동률 TOP</a></li>
+    </ul>
+    <ul>
+        <h3>5.사용자</h3>
+        <li><a th:href="@{/user/userApp}">앱별 신규회원</a></li>
+    </ul>
+    <ul>
+        <h3>6.마케팅</h3>
+        <li><a th:href="@{/marketing/preLandingPage}">프리랜딩페이지</a></li>
+    </ul>
+</div>
+</body>
+</html>
