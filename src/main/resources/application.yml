@@ -1,10 +1,14 @@
-server:
+﻿server:
   port: 8021
   shutdown: graceful
   name: htPlatform
   http2:
     enabled: true
-
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 springdoc:
   api-docs.enabled: true
   packages-to-scan: com.cknb.htPlatform
@@ -13,7 +17,6 @@ springdoc:
   api-docs.groups.enabled: true
   cache.disabled: true
   default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
 
 spring:
   http:
@@ -65,7 +68,11 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
-
+  #Redis
+  data:
+    redis:
+      host: 52.77.138.41
+      port: 6379
 logging:
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"

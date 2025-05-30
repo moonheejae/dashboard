@@ -2,8 +2,8 @@
 
 "use strict"; // Strict 모드를 활성화
 
-const deFaultUrl = "http://localhost:8021/"; // local
-// const deFaultUrl = "http://52.77.138.41:8020/"; // test server
+// const deFaultUrl = "http://192.168.0.14:8021/"; // local
+const deFaultUrl = "http://52.77.138.41:8021/"; // test server
 // const deFaultUrl = "http://hiddentagiqr.com:8020/"; // application.urls.data_report 와 동일
 const downloadControllerUrl = "api/download";
 const exeControllerUrl = "api/exe";

@@ -47,6 +47,8 @@
     <!-- 4. Chart.js 관련 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <!-- socket -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <!-- 5. 기타 공통 스크립트 -->
     <script th:src="@{/js/common/default.js}"></script>
     <script th:src="@{/js/common/common.js}"></script>
@@ -357,6 +359,36 @@
             <div class="corner-decoration-right"></div>
         </div>
     </div>
+</div>
+<div>
+    <table id="communityTable" style="color: aliceblue; text-align: center;">
+        <thead>
+        <tr>
+            <th>App Kind</th>
+            <th>Create Date</th>
+            <th>Title</th>
+            <th>User Nickname</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows will be appended here -->
+        </tbody>
+    </table>
+</div>
+<br/>
+<div>
+    <table id="chatTable" style="color: aliceblue; text-align: center;">
+        <thead>
+        <tr>
+            <th>Create Date</th>
+            <th>Content</th>
+            <th>User</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows will be appended here -->
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

@@ -1,4 +1,7 @@
 "use strict"; // Strict 모드를 활성화
+// 소켓 연결 상태 관리
+let ws = null;
+let isConnected = false;
 
 
 $(document).ready(function() {
@@ -13,13 +16,10 @@ function init() {
     updateDateTime();
     // 소켓 연결 - 초기 상태는 OFFLINE
     updateConnectionStatus(false);
-    // connectSocket();
+    connectSocket();
     // 데이터 가져오기
 
 }
-// 소켓 연결 상태 관리
-let socket = null;
-let isConnected = false;
 
 // 상태 업데이트 함수
 function updateConnectionStatus(connected) {
@@ -41,41 +41,109 @@ function updateConnectionStatus(connected) {
         isConnected = false;
     }
 }
-
-// 소켓 연결 시도
+// 소켓 연결
 function connectSocket() {
     try {
-        // 실제 소켓 서버 주소로 변경하세요
-        socket = new WebSocket('ws://localhost:8080');
+        // 엔드포인트 수정: /realtime (서버와 일치)
+        ws = new SockJS('http://52.77.138.41:8021/ws');
 
-        socket.onopen = function(event) {
-            console.log('소켓 연결 성공');
+        ws.onopen = function() {
+            console.log('✅ 연결 성공');
+            isConnected = true;
             updateConnectionStatus(true);
         };
 
-        socket.onmessage = function(event) {
-            console.log('메시지 수신:', event.data);
-            // 여기서 받은 데이터를 처리
+        ws.onmessage = function(event) {
+            console.log('📨 수신:', event.data);
+            handleMessage(JSON.parse(event.data));
         };
 
-        socket.onclose = function(event) {
-            console.log('소켓 연결 종료');
+        ws.onclose = function(event) {
+            console.log('❌ 연결 종료:', event.code);
+            isConnected = false;
             updateConnectionStatus(false);
-            // 5초 후 재연결 시도
+
+            // 5초 후 재연결
             setTimeout(connectSocket, 5000);
         };
 
-        socket.onerror = function(error) {
-            console.error('소켓 에러:', error);
+        ws.onerror = function(error) {
+            console.error('🚨 오류:', error);
+            isConnected = false;
             updateConnectionStatus(false);
         };
 
     } catch (error) {
-        console.error('소켓 연결 실패:', error);
-        updateConnectionStatus(false);
-        // 5초 후 재연결 시도
+        console.error('연결 실패:', error);
         setTimeout(connectSocket, 5000);
     }
+}
+
+// 메시지 처리
+function handleMessage(message) {
+    switch(message.type) {
+        case 'connected':
+            console.log('연결 완료:', message.message);
+            break;
+        case 'community_monitor':
+            console.log('DB 변경:', message.data);
+            updateLiveCommunityPost(message.data);
+            break;
+        case 'chat_monitor':
+            updateTradeChat(message.data); // 현재 1:1 채팅, 중고 거래 채팅의 구분 없이 노출, 추후 분리 필요시 분리
+            break;
+        case 'trade_chat_monitor':
+            updateTradeChat(message.data);
+            break;
+        case 'exe_monitor':
+            console.log('EXE 발생', message.type);
+            break;
+        default:
+            console.log('기타:', message);
+    }
+}
+
+// 실시간 커뮤니티 게시물
+function updateLiveCommunityPost(jsonData) {
+    let title = jsonData.title;
+    let app_kind = jsonData.app_kind; // HT, COP, Global
+    let user_nickname = jsonData.user_nickname || jsonData.user_no;
+    let create_date = jsonData.create_date.split('.')[0].replace('T', ' ');
+
+    const newRow = `
+            <tr>
+                <td>${app_kind}</td>
+                <td>${create_date}</td>
+                <td>${title}</td>
+                <td>${user_nickname}</td>
+            </tr>
+        `;
+
+    if( jsonData.type === 'TradeEntitiy' ){ // 정품 인증 거래
+        $('#communityTable tbody').prepend(newRow);
+    }else if( jsonData.type === 'CommProductReviewEntity' ){ // 정품 제품 리뷰
+        $('#communityTable tbody').prepend(newRow);
+    }else if( jsonData.type === 'CommDebateEntity' ){ // 정품 Qna
+        $('#communityTable tbody').prepend(newRow);
+    }else if( jsonData.type === 'CommInfoEntity' ){ // 정품 판별 팁
+        $('#communityTable tbody').prepend(newRow);
+    }
+}
+
+function updateTradeChat(jsonData){
+    let nickName = jsonData.nick_name;
+    let content = jsonData.content;
+    let create_date = jsonData.create_date.split('.')[0].replace('T', ' ');
+
+    // 실시간 중고 거래 채팅(1:1 채팅) 로직 추가
+    const newRow = `
+            <tr>
+                <td>${create_date}</td>
+                <td>${content}</td>
+                <td>${nickName}</td>
+            </tr>
+        `;
+    $('#chatTable tbody').prepend(newRow);
 }
 
 function updateDateTime() {
@@ -100,6 +168,5 @@ function updateDateTime() {
     $("#dateDisplay").text(dateString);
     $("#timeDisplay").text(timeString);
 }
-
 
 

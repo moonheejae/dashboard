@@ -50,6 +50,17 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+    // Redis (실시간 데이터 구독용)
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // JSON 처리
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // 로깅
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // WebSocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
