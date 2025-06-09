@@ -71,13 +71,25 @@ spring:
   #Redis
   data:
     redis:
-      host: 52.77.138.41
-      port: 6379
+#      host: 52.77.138.41  # test server
+      host: ${REDIS_HOST:192.168.0.14}  # local
+      port: ${REDIS_PORT:6379}
 logging:
   pattern:
     console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
     file: "[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
   level:
+    # 전체 애플리케이션 로그 레벨
+    com.cknb.htPlatform: INFO
+    # 스케줄러만 따로 설정
+    com.cknb.htPlatform.scheduler: INFO
+    # SQL 로그 줄이기 (log4jdbc)
+    log4jdbc.log4j2: WARN
+    # HikariCP 경고 로그 줄이기
+    com.zaxxer.hikari: WARN
+    # 스프링 스케줄링 로그 줄이기
+    org.springframework.scheduling: WARN
+
     com.example.log: debug
     org:
       springframework:

@@ -45,7 +45,8 @@ function updateConnectionStatus(connected) {
 function connectSocket() {
     try {
         // 엔드포인트 수정: /realtime (서버와 일치)
-        ws = new SockJS('http://52.77.138.41:8021/ws');
+        ws = new SockJS('http://192.168.0.14:8021/ws');
+        // ws = new SockJS('http://52.77.138.41:8021/ws');
 
         ws.onopen = function() {
             console.log('✅ 연결 성공');
@@ -82,25 +83,67 @@ function connectSocket() {
 // 메시지 처리
 function handleMessage(message) {
     switch(message.type) {
-        case 'connected':
-            console.log('연결 완료:', message.message);
-            break;
-        case 'community_monitor':
-            console.log('DB 변경:', message.data);
+        case monitoringChannel.COMMUNITY:
+            console.log('커뮤니티 :', message.data);
             updateLiveCommunityPost(message.data);
             break;
-        case 'chat_monitor':
-            updateTradeChat(message.data); // 현재 1:1 채팅, 중고 거래 채팅의 구분 없이 노출, 추후 분리 필요시 분리
+        case monitoringChannel.CHAT:
+            updateLiveChat(message.data); // 현재 1:1 채팅, 중고 거래 채팅의 구분 없이 노출, 추후 분리 필요시 분리
             break;
-        case 'trade_chat_monitor':
-            updateTradeChat(message.data);
+        case monitoringChannel.TRADE_CHAT:
+            updateLiveChat(message.data);
             break;
-        case 'exe_monitor':
+        case monitoringChannel.EXE:
             console.log('EXE 발생', message.type);
+            updateLiveExe(message.data);
+            break;
+        case monitoringChannel.SCAN:
+            console.log('스캔 발생', message.type);
+            updateLiveScan(message.data);
             break;
         default:
             console.log('기타:', message);
     }
+}
+
+// 실시간 스캔 정보
+function updateLiveScan(jsonData) {
+    let nation = jsonData.address_n;
+    let idx = jsonData.idx; // HT, COP, Global
+    let device = jsonData.device_imei;
+    let customer = jsonData.customer_name;
+    let brand = jsonData.brand_name;
+    let create_date = jsonData.det_time.split('.')[0].replace('T', ' ');
+
+    const newRow = `
+            <tr>
+                <td>${create_date}</td>
+                <td>${idx}</td>
+                <td>${customer}</td>
+                <td>${brand}</td>
+                <td>${device}</td>
+                <td>${nation}</td>
+            </tr>
+        `;
+    $('#scanTable tbody').prepend(newRow);
+}
+
+// 실시간 실행 정보
+function updateLiveExe(jsonData) {
+    let nation = jsonData.address_n;
+    let app_kind = jsonData.app_kind; // HT, COP, Global
+    let device = jsonData.device_imei;
+    let create_date = jsonData.create_date.split('.')[0].replace('T', ' ');
+
+    const newRow = `
+            <tr>
+                <td>${create_date}</td>
+                <td>${device}</td>
+                <td>${app_kind}</td>
+                <td>${nation}</td>
+            </tr>
+        `;
+    $('#exeTable tbody').prepend(newRow);
 }
 
 // 실시간 커뮤니티 게시물
@@ -130,7 +173,7 @@ function updateLiveCommunityPost(jsonData) {
     }
 }
 
-function updateTradeChat(jsonData){
+function updateLiveChat(jsonData){
     let nickName = jsonData.nick_name;
     let content = jsonData.content;
     let create_date = jsonData.create_date.split('.')[0].replace('T', ' ');
