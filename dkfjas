@@ -1,0 +1,17 @@
+[33mcommit a373360dc7070a55404482b3961f6a3abab075c5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32morigin[m[33m)[m
+Author: mnhj <mnhj@kakao.com>
+Date:   Mon Jun 9 11:49:07 2025 +0900
+
+    중간 커밋
+
+[33mcommit 41f7f57245b0851f30d3a01e6c8c21b5d680903c[m
+Author: mnhj <mnhj@kakao.com>
+Date:   Fri May 30 18:01:53 2025 +0900
+
+    init
+
+[33mcommit 9463b92f3fe5e43b37311f388050bc099119c234[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: mnhj <mnhj@kakao.com>
+Date:   Fri May 23 17:22:48 2025 +0900
+
+    Initial commit: New project setup

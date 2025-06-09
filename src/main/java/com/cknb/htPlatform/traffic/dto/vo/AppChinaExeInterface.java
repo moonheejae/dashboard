@@ -1,0 +1,16 @@
+package com.cknb.htPlatform.traffic.dto.vo;
+
+public interface AppChinaExeInterface {
+    Integer getChinaTotal();
+    Integer getBaidu();
+    Integer getVivo();
+    Integer getOppo();
+    Integer getHuawei();
+    Integer getXiaomi();
+    Integer getThreesixzero();
+    Integer getWandure();
+    Integer getFlyme();
+    Integer getYongbo();
+    Integer getLenovo();
+    Integer getHonor();
+}
